@@ -1,0 +1,428 @@
+[
+    {
+        "id": "ce9ab076.07e29",
+        "type": "tab",
+        "label": "Flow 5",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "62763b16.4b6844",
+        "type": "rpi-dht22",
+        "z": "ce9ab076.07e29",
+        "name": "",
+        "topic": "rpi-dht22",
+        "dht": "11",
+        "pintype": "0",
+        "pin": 4,
+        "x": 320,
+        "y": 520,
+        "wires": [
+            [
+                "bbc8882e.8ce1b8",
+                "c3678635.ef4c68"
+            ]
+        ]
+    },
+    {
+        "id": "bbc8882e.8ce1b8",
+        "type": "function",
+        "z": "ce9ab076.07e29",
+        "name": "Humidity",
+        "func": "msg.payload = msg.humidity;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 540,
+        "y": 460,
+        "wires": [
+            [
+                "27925e36.2a8552"
+            ]
+        ]
+    },
+    {
+        "id": "c3678635.ef4c68",
+        "type": "function",
+        "z": "ce9ab076.07e29",
+        "name": "Temperature",
+        "func": "msg.payload = msg.payload;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 550,
+        "y": 520,
+        "wires": [
+            [
+                "27925e36.2a8552"
+            ]
+        ]
+    },
+    {
+        "id": "290c0941.656c46",
+        "type": "mqtt out",
+        "z": "ce9ab076.07e29",
+        "name": "",
+        "topic": "/Bom Kritsakorn",
+        "qos": "",
+        "retain": "",
+        "broker": "3b19dc51.13f854",
+        "x": 1100,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "27925e36.2a8552",
+        "type": "join",
+        "z": "ce9ab076.07e29",
+        "name": "",
+        "mode": "custom",
+        "build": "array",
+        "property": "payload",
+        "propertyType": "msg",
+        "key": "topic",
+        "joiner": "\\n",
+        "joinerType": "str",
+        "accumulate": false,
+        "timeout": "",
+        "count": "2",
+        "reduceRight": false,
+        "reduceExp": "",
+        "reduceInit": "",
+        "reduceInitType": "num",
+        "reduceFixup": "",
+        "x": 790,
+        "y": 520,
+        "wires": [
+            [
+                "8fc22225.2707"
+            ]
+        ]
+    },
+    {
+        "id": "8fc22225.2707",
+        "type": "function",
+        "z": "ce9ab076.07e29",
+        "name": "JSON",
+        "func": "msg.payload = {\"database\":\"Bom Kritsakorn\",\n        \"data\":[{\"measurement\":\"Bom Kritsakorn\",\"tags\":{\"tag\":\"g\"},\"fields\":{\"humid\":msg.payload[0],\"tem\":msg.payload[1]}}]};\nreturn msg;\n\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 910,
+        "y": 520,
+        "wires": [
+            [
+                "290c0941.656c46",
+                "3c036e26.3a6ce2"
+            ]
+        ]
+    },
+    {
+        "id": "d6acb4ca.a353c8",
+        "type": "inject",
+        "z": "ce9ab076.07e29",
+        "name": "",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "repeat": "15",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 110,
+        "y": 520,
+        "wires": [
+            [
+                "62763b16.4b6844"
+            ]
+        ]
+    },
+    {
+        "id": "69836fa4.f7021",
+        "type": "debug",
+        "z": "ce9ab076.07e29",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 790,
+        "y": 600,
+        "wires": []
+    },
+    {
+        "id": "5f6c6d4.4d35194",
+        "type": "sensor-ds18b20",
+        "z": "ce9ab076.07e29",
+        "name": "",
+        "topic": "",
+        "sensorid": "28-011453742daa",
+        "timer": "15",
+        "repeat": false,
+        "x": 350,
+        "y": 660,
+        "wires": [
+            [
+                "d3e89172.8f4fd"
+            ]
+        ]
+    },
+    {
+        "id": "51122bcd.e3f564",
+        "type": "sensor-ds18b20",
+        "z": "ce9ab076.07e29",
+        "name": "",
+        "topic": "",
+        "sensorid": "28-0300a2791db2",
+        "timer": "15",
+        "repeat": false,
+        "x": 330,
+        "y": 760,
+        "wires": [
+            [
+                "238b0c13.43c764"
+            ]
+        ]
+    },
+    {
+        "id": "d3e89172.8f4fd",
+        "type": "function",
+        "z": "ce9ab076.07e29",
+        "name": "Temperature",
+        "func": "msg.payload = msg.payload;\nif(msg.payload === false)\n{\n    return null;\n}\nelse\n{\n   return msg;\n}",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 530,
+        "y": 660,
+        "wires": [
+            [
+                "69836fa4.f7021",
+                "2e42c785.8d89f8"
+            ]
+        ]
+    },
+    {
+        "id": "238b0c13.43c764",
+        "type": "function",
+        "z": "ce9ab076.07e29",
+        "name": "Temperature",
+        "func": "msg.payload = msg.payload;\nif(msg.payload === false)\n{\n    return null;\n}\nelse\n{\n   return msg;\n}",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 530,
+        "y": 760,
+        "wires": [
+            [
+                "962f607f.0762",
+                "48fdb17f.00349"
+            ]
+        ]
+    },
+    {
+        "id": "98b0ca68.0e44c8",
+        "type": "inject",
+        "z": "ce9ab076.07e29",
+        "name": "",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "repeat": "15",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 110,
+        "y": 660,
+        "wires": [
+            [
+                "5f6c6d4.4d35194",
+                "51122bcd.e3f564"
+            ]
+        ]
+    },
+    {
+        "id": "c57c5525.27f5f8",
+        "type": "mqtt out",
+        "z": "ce9ab076.07e29",
+        "name": "",
+        "topic": "/Bom Kritsakorn",
+        "qos": "",
+        "retain": "",
+        "broker": "3b19dc51.13f854",
+        "x": 1200,
+        "y": 680,
+        "wires": []
+    },
+    {
+        "id": "2e42c785.8d89f8",
+        "type": "function",
+        "z": "ce9ab076.07e29",
+        "name": "JSON",
+        "func": "msg.payload = {\"database\":\"Bom Kritsakorn\",\n        \"data\":[{\"measurement\":\"Bom Kritsakorn\",\"tags\":{\"tag\":\"g\"},\"fields\":{\"temL1\":String(msg.payload)}}]};\nreturn msg;\n\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 830,
+        "y": 660,
+        "wires": [
+            [
+                "c57c5525.27f5f8",
+                "4b81f875.5a6da8"
+            ]
+        ]
+    },
+    {
+        "id": "962f607f.0762",
+        "type": "debug",
+        "z": "ce9ab076.07e29",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 770,
+        "y": 860,
+        "wires": []
+    },
+    {
+        "id": "48fdb17f.00349",
+        "type": "function",
+        "z": "ce9ab076.07e29",
+        "name": "JSON",
+        "func": "msg.payload = {\"database\":\"Bom Kritsakorn\",\n        \"data\":[{\"measurement\":\"Bom Kritsakorn\",\"tags\":{\"tag\":\"g\"},\"fields\":{\"temL2\":String(msg.payload)}}]};\nreturn msg;\n\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 830,
+        "y": 760,
+        "wires": [
+            [
+                "c57c5525.27f5f8",
+                "6539b93c.123b28"
+            ]
+        ]
+    },
+    {
+        "id": "5da74983.ffb168",
+        "type": "rpi-gpio in",
+        "z": "ce9ab076.07e29",
+        "name": "",
+        "pin": "12",
+        "intype": "tri",
+        "debounce": "25",
+        "read": false,
+        "x": 340,
+        "y": 980,
+        "wires": [
+            [
+                "73965808.c0a038",
+                "509ca3c7.cd1eec"
+            ]
+        ]
+    },
+    {
+        "id": "73965808.c0a038",
+        "type": "function",
+        "z": "ce9ab076.07e29",
+        "name": "JSON",
+        "func": "msg.payload = {\"database\":\"Bom Kritsakorn\",\n        \"data\":[{\"measurement\":\"Bom Kritsakorn\",\"tags\":{\"tag\":\"g\"},\"fields\":{\"Level\":String(msg.payload)}}]};\nreturn msg;\n\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 810,
+        "y": 980,
+        "wires": [
+            [
+                "c57c5525.27f5f8",
+                "5634b202.77102c"
+            ]
+        ]
+    },
+    {
+        "id": "5634b202.77102c",
+        "type": "debug",
+        "z": "ce9ab076.07e29",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 1090,
+        "y": 1040,
+        "wires": []
+    },
+    {
+        "id": "509ca3c7.cd1eec",
+        "type": "debug",
+        "z": "ce9ab076.07e29",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 490,
+        "y": 1060,
+        "wires": []
+    },
+    {
+        "id": "4b81f875.5a6da8",
+        "type": "debug",
+        "z": "ce9ab076.07e29",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 1170,
+        "y": 600,
+        "wires": []
+    },
+    {
+        "id": "6539b93c.123b28",
+        "type": "debug",
+        "z": "ce9ab076.07e29",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 1190,
+        "y": 760,
+        "wires": []
+    },
+    {
+        "id": "3c036e26.3a6ce2",
+        "type": "debug",
+        "z": "ce9ab076.07e29",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 1190,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "3b19dc51.13f854",
+        "type": "mqtt-broker",
+        "z": "",
+        "name": "Bom Kritsakorn",
+        "broker": "167.71.219.4",
+        "port": "1883",
+        "clientid": "",
+        "usetls": false,
+        "compatmode": true,
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": ""
+    }
+]
